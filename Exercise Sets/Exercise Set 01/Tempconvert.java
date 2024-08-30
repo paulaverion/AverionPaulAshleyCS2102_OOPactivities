@@ -10,5 +10,6 @@ public class Tempconvert
         double Celsius = scanner.nextDouble();
         double Fahrenheit = (Celsius * 9)/5 + 32;
         System.out.println(Celsius + " Celsius is " + Fahrenheit + " Fahrenheit");
+        scanner.close();
     }
 }

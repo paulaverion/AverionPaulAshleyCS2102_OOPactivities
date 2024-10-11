@@ -33,7 +33,15 @@ class Car
 
     public void setPrice(double price)
     {
-        this.price = price;
+        if (price >= 0)
+        {
+            this.price = price;
+        } 
+        else
+        {
+            System.out.println("Invalid price. Price cannot be negative.");
+        }
+
     }
 
     public void setSize(char size)

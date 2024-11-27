@@ -1,50 +1,30 @@
-public class Tourist //template
-{
+public class Tourist {
     private int id;
-    private int score;
-    private double average;
+    private double totalCarbonFootprint;
 
-    public Tourist(int id, int score, double average) 
-    {
+    public Tourist(int id, double totalCarbonFootprint) {
         this.id = id;
-        this.score = score;
-        this.average = average;
+        this.totalCarbonFootprint = totalCarbonFootprint;
     }
 
-    public int getId() 
-    {
+    public int getId() {
         return id;
     }
 
-    public void setId(int id) 
-    {
+    public void setId(int id) {
         this.id = id;
     }
 
-    public int getScore() 
-    {
-        return score;
+    public double getTotalCarbonFootprint() {
+        return totalCarbonFootprint;
     }
 
-    public void setScore(int score) 
-    {
-        this.score = score;
+    public void setTotalCarbonFootprint(double totalCarbonFootprint) {
+        this.totalCarbonFootprint = totalCarbonFootprint;
     }
 
-    public double getAverage()
-    {
-        return average;
-    }
-
-    public void setAverage(double average) 
-    {
-        this.average = average;
-    }
-
-    public void displayTouristInfo() 
-    {
+    public void displayTouristInfo() {
         System.out.println("Tourist ID: " + id);
-        System.out.println("Score (Max 10): " + score);
-        System.out.println("Average: " + average);
+        System.out.println("Total Carbon Footprint: " + totalCarbonFootprint + " kg CO2");
     }
 }

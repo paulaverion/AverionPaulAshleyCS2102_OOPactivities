@@ -19,7 +19,6 @@ public class FileHandler {
         }
     }
 
-    // Method to read and display all saved data
     public static void readData() {
         File file = new File(FILE_NAME);
         if (!file.exists()) {

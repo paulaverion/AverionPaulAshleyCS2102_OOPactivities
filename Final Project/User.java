@@ -15,5 +15,5 @@ public abstract class User {
         return username;
     }
 
-    public abstract void displayInfo(); // Abstract method for polymorphism
+    public abstract void displayInfo();
 }

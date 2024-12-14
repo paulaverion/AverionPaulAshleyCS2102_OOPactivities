@@ -85,7 +85,7 @@ public class Main {
 
     private static void manageCarbonFootprint(Scanner scanner, int id) {
         CarbonFootprintCalculator calculator = calculatorDatabase.get(id);
-
+    
         while (true) {
             System.out.println("\nManage Carbon Footprint");
             System.out.println("-------------------------------");
@@ -95,7 +95,9 @@ public class Main {
             System.out.println("4. Add Waste");
             System.out.println("5. Display Total Carbon Footprint");
             System.out.println("6. Display All Entries");
-            System.out.println("7. Logout");
+            System.out.println("7. Save Data to File");
+            System.out.println("8. View Saved Data");
+            System.out.println("9. Logout");
             System.out.print("Enter your choice: ");
             if (scanner.hasNextInt()) {
                 int choice = scanner.nextInt();
@@ -119,6 +121,14 @@ public class Main {
                         calculator.displayEntryDetails();
                         break;
                     case 7:
+                        String entryDetails = calculator.getEntries();
+                        double totalFootprint = calculator.getTotalCarbonFootprint();
+                        FileHandler.saveData(id, entryDetails, totalFootprint);
+                        break;
+                    case 8:
+                        FileHandler.readData();
+                        break;
+                    case 9:
                         System.out.println("Logging out...");
                         return;
                     default:

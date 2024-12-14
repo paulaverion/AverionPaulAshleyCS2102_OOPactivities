@@ -47,6 +47,10 @@ public class CarbonFootprintCalculator implements CarbonFootprintEntry {
         return totalCarbonFootprint;
     }
 
+    public String getEntries() {
+        return entries.toString();
+    }
+
     @Override
     public void displayEntryDetails() {
         System.out.println("All Carbon Footprint Entries:");

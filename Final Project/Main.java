@@ -1,25 +1,23 @@
-import java.util.HashMap;
-import java.util.Scanner;
+import java.util.*;
 
 public class Main {
-    private static HashMap<String, String> userDatabase = new HashMap<>();
-    private static HashMap<String, Tourist> touristDatabase = new HashMap<>();
-    private static HashMap<Integer, CarbonFootprintCalculator> carbonCalculatorDatabase = new HashMap<>();
+    private static Map<String, String> userDatabase = new HashMap<>();
+    private static Map<String, Tourist> touristDatabase = new HashMap<>();
+    private static Map<Integer, CarbonFootprintCalculator> calculatorDatabase = new HashMap<>();
     private static int nextId = 1;
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
-            System.out.println("Carbon Footprint Calculator");
+            System.out.println("\nCarbon Footprint Calculator");
             System.out.println("-------------------------------");
             System.out.println("1. Register");
             System.out.println("2. Login");
             System.out.println("3. Exit");
             System.out.print("Enter your choice: ");
-            if (scanner.hasNextInt()) { // Check if input is an integer
+            if (scanner.hasNextInt()) {
                 int choice = scanner.nextInt();
-        
                 switch (choice) {
                     case 1:
                         register(scanner);
@@ -36,12 +34,12 @@ public class Main {
                 }
             } else {
                 System.out.println("Invalid input. Please enter a number.");
-                scanner.next(); // Clear invalid input from the scanner
+                scanner.next();
             }
         }
     }
 
-    public static void register(Scanner scanner) {
+    private static void register(Scanner scanner) {
         System.out.print("Enter your username: ");
         String username = scanner.next();
 
@@ -54,20 +52,17 @@ public class Main {
         String password = scanner.next();
 
         int id = nextId++;
-
-        Tourist newTourist = new Tourist(id, 0.0);
-
-        CarbonFootprintCalculator carbonCalculator = new CarbonFootprintCalculator(id);
+        Tourist newTourist = new Tourist(id, username);
+        CarbonFootprintCalculator calculator = new CarbonFootprintCalculator();
 
         userDatabase.put(username, password);
-
         touristDatabase.put(username, newTourist);
-        carbonCalculatorDatabase.put(id, carbonCalculator);
+        calculatorDatabase.put(id, calculator);
 
         System.out.println("Registration successful! Your ID is: " + id);
     }
 
-    public static void login(Scanner scanner) {
+    private static void login(Scanner scanner) {
         System.out.print("Enter your username: ");
         String username = scanner.next();
 
@@ -75,23 +70,21 @@ public class Main {
         String password = scanner.next();
 
         if (userDatabase.containsKey(username) && userDatabase.get(username).equals(password)) {
-            System.out.println("Login successful! Welcome, " + username + "!");
-            
             Tourist tourist = touristDatabase.get(username);
-            System.out.println("Your Tourist Details:");
-            tourist.displayTouristInfo();
+            System.out.println("Login successful! Welcome, " + username + "!");
+            tourist.displayInfo();
 
             manageCarbonFootprint(scanner, tourist.getId());
 
-            CarbonFootprintCalculator carbonCalculator = carbonCalculatorDatabase.get(tourist.getId());
-            tourist.setTotalCarbonFootprint(carbonCalculator.getTotalCarbonFootprint());
+            CarbonFootprintCalculator calculator = calculatorDatabase.get(tourist.getId());
+            tourist.setTotalCarbonFootprint(calculator.getTotalCarbonFootprint());
         } else {
             System.out.println("Invalid username or password. Please try again.");
         }
     }
 
-    public static void manageCarbonFootprint(Scanner scanner, int id) {
-        CarbonFootprintCalculator carbonCalculator = carbonCalculatorDatabase.get(id);
+    private static void manageCarbonFootprint(Scanner scanner, int id) {
+        CarbonFootprintCalculator calculator = calculatorDatabase.get(id);
 
         while (true) {
             System.out.println("\nManage Carbon Footprint");
@@ -101,105 +94,100 @@ public class Main {
             System.out.println("3. Add Air Travel");
             System.out.println("4. Add Waste");
             System.out.println("5. Display Total Carbon Footprint");
-            System.out.println("6. Logout");
+            System.out.println("6. Display All Entries");
+            System.out.println("7. Logout");
             System.out.print("Enter your choice: ");
             if (scanner.hasNextInt()) {
                 int choice = scanner.nextInt();
-                    try {
-                        switch (choice) {
-                            case 1:
-                                while (true) {
-                                    System.out.print("Enter electricity usage in kWh: ");
-                                    if (scanner.hasNextDouble()) {
-                                        double kWh = scanner.nextDouble();
-                                        if (kWh < 0) {
-                                            System.out.println("Electricity usage cannot be negative. Please try again.");
-                                        } else {
-                                            carbonCalculator.addElectricityUsage(kWh);
-                                            break; // Exit loop after successful input
-                                        }
-                                    } else {
-                                        System.out.println("Invalid input. Please enter a numeric value.");
-                                        scanner.next(); // Clear invalid input
-                                    }
-                                }
-                                break;
-                    
-                            case 2:
-                                while (true) {
-                                    System.out.print("Enter liters of fuel used: ");
-                                    if (scanner.hasNextDouble()) {
-                                        double liters = scanner.nextDouble();
-                                        if (liters < 0) {
-                                            System.out.println("Fuel usage cannot be negative. Please try again.");
-                                        } else {
-                                            carbonCalculator.addVehicleTravel(liters); // Default fuel type
-                                            break; // Exit loop after successful input
-                                        }
-                                    } else {
-                                        System.out.println("Invalid input. Please enter a numeric value.");
-                                        scanner.next(); // Clear invalid input
-                                    }
-                                }
-                                break;
-                    
-                            case 3:
-                                while (true) {
-                                    System.out.print("Enter air travel distance in km: ");
-                                    if (scanner.hasNextDouble()) {
-                                        double distance = scanner.nextDouble();
-                                        if (distance < 0) {
-                                            System.out.println("Distance cannot be negative. Please try again.");
-                                        } else {
-                                            carbonCalculator.addAirTravel(distance);
-                                            break; // Exit loop after successful input
-                                        }
-                                    } else {
-                                        System.out.println("Invalid input. Please enter a numeric value.");
-                                        scanner.next(); // Clear invalid input
-                                    }
-                                }
-                                break;
-                    
-                            case 4:
-                                while (true) {
-                                    System.out.print("Enter waste in kg: ");
-                                    if (scanner.hasNextDouble()) {
-                                        double waste = scanner.nextDouble();
-                                        if (waste < 0) {
-                                            System.out.println("Waste cannot be negative. Please try again.");
-                                        } else {
-                                            carbonCalculator.addWaste(waste);
-                                            break; // Exit loop after successful input
-                                        }
-                                    } else {
-                                        System.out.println("Invalid input. Please enter a numeric value.");
-                                        scanner.next(); // Clear invalid input
-                                    }
-                                }
-                                break;
-                    
-                            case 5:
-                                carbonCalculator.displayTotalCarbonFootprint();
-                                break;
-                    
-                            case 6:
-                                System.out.println("Logging out...");
-                                return;
-                    
-                            default:
-                                System.out.println("Invalid choice. Please try again.");
-                        }
-                    } catch (Exception e) {
-                        System.out.println("An unexpected error occurred: " + e.getMessage());
-                    }
-                    
-            }
-            else {
+                switch (choice) {
+                    case 1:
+                        addElectricity(scanner, calculator);
+                        break;
+                    case 2:
+                        addVehicle(scanner, calculator);
+                        break;
+                    case 3:
+                        addAirTravel(scanner, calculator);
+                        break;
+                    case 4:
+                        addWaste(scanner, calculator);
+                        break;
+                    case 5:
+                        calculator.displayTotalCarbonFootprint();
+                        break;
+                    case 6:
+                        calculator.displayEntryDetails();
+                        break;
+                    case 7:
+                        System.out.println("Logging out...");
+                        return;
+                    default:
+                        System.out.println("Invalid choice. Please try again.");
+                }
+            } else {
                 System.out.println("Invalid input. Please enter a number.");
-                scanner.next(); // Clear invalid input
+                scanner.next();
             }
         }
+    }
 
+    private static void addElectricity(Scanner scanner, CarbonFootprintCalculator calculator) {
+        System.out.print("Enter electricity usage in kWh: ");
+        if (scanner.hasNextDouble()) {
+            double kWh = scanner.nextDouble();
+            if (kWh >= 0) {
+                calculator.addElectricityUsage(kWh);
+            } else {
+                System.out.println("Electricity usage cannot be negative.");
+            }
+        } else {
+            System.out.println("Invalid input. Please enter a numeric value.");
+            scanner.next();
+        }
+    }
+
+    private static void addVehicle(Scanner scanner, CarbonFootprintCalculator calculator) {
+        System.out.print("Enter liters of fuel used: ");
+        if (scanner.hasNextDouble()) {
+            double liters = scanner.nextDouble();
+            if (liters >= 0) {
+                calculator.addVehicleTravel(liters);
+            } else {
+                System.out.println("Fuel usage cannot be negative.");
+            }
+        } else {
+            System.out.println("Invalid input. Please enter a numeric value.");
+            scanner.next();
+        }
+    }
+
+    private static void addAirTravel(Scanner scanner, CarbonFootprintCalculator calculator) {
+        System.out.print("Enter air travel distance in km: ");
+        if (scanner.hasNextDouble()) {
+            double distance = scanner.nextDouble();
+            if (distance >= 0) {
+                calculator.addAirTravel(distance);
+            } else {
+                System.out.println("Distance cannot be negative.");
+            }
+        } else {
+            System.out.println("Invalid input. Please enter a numeric value.");
+            scanner.next();
+        }
+    }
+
+    private static void addWaste(Scanner scanner, CarbonFootprintCalculator calculator) {
+        System.out.print("Enter waste in kg: ");
+        if (scanner.hasNextDouble()) {
+            double waste = scanner.nextDouble();
+            if (waste >= 0) {
+                calculator.addWaste(waste);
+            } else {
+                System.out.println("Waste cannot be negative.");
+            }
+        } else {
+            System.out.println("Invalid input. Please enter a numeric value.");
+            scanner.next();
+        }
     }
 }

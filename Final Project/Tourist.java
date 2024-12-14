@@ -1,18 +1,9 @@
-public class Tourist {
-    private int id;
+public class Tourist extends User {
     private double totalCarbonFootprint;
 
-    public Tourist(int id, double totalCarbonFootprint) {
-        this.id = id;
-        this.totalCarbonFootprint = totalCarbonFootprint;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
+    public Tourist(int id, String username) {
+        super(id, username);
+        this.totalCarbonFootprint = 0.0;
     }
 
     public double getTotalCarbonFootprint() {
@@ -23,8 +14,11 @@ public class Tourist {
         this.totalCarbonFootprint = totalCarbonFootprint;
     }
 
-    public void displayTouristInfo() {
-        System.out.println("Tourist ID: " + id);
+    @Override
+    public void displayInfo() {
+        System.out.println("Tourist Information:");
+        System.out.println("ID: " + getId());
+        System.out.println("Username: " + getUsername());
         System.out.println("Total Carbon Footprint: " + totalCarbonFootprint + " kg CO2");
     }
 }

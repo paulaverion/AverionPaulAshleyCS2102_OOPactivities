@@ -1,46 +1,59 @@
-public class CarbonFootprintCalculator {
-    private int id;
+import java.text.DecimalFormat;
+
+public class CarbonFootprintCalculator implements CarbonFootprintEntry {
     private double totalCarbonFootprint;
+    private StringBuilder entries;
+    private DecimalFormat df;
 
-    private static final double ELECTRICITY_EMISSION_FACTOR = 0.9;
-    private static final double GASOLINE_EMISSION_FACTOR = 2.31;
-    private static final double AIR_TRAVEL_EMISSION_FACTOR = 0.15;
-    private static final double WASTE_EMISSION_FACTOR = 1.2;
-
-    public CarbonFootprintCalculator(int id) {
-        this.id = id;
+    public CarbonFootprintCalculator() {
         this.totalCarbonFootprint = 0.0;
+        this.entries = new StringBuilder();
+        this.df = new DecimalFormat("#.00");
+    }
+
+    public void addEntry(double value) {
+        totalCarbonFootprint += value;
     }
 
     public void addElectricityUsage(double kWh) {
-        double carbon = kWh * ELECTRICITY_EMISSION_FACTOR;
-        totalCarbonFootprint += carbon;
-        System.out.println("Electricity usage added: " + carbon + " kg CO2");
+        double footprint = kWh * 0.233;
+        totalCarbonFootprint += footprint;
+        entries.append("Electricity Usage: ").append(kWh).append(" kWh, Carbon Footprint: ")
+               .append(df.format(footprint)).append(" kg CO2\n");
     }
 
-    public void addVehicleTravel(double litersOfFuel) {
-        double carbon = litersOfFuel * GASOLINE_EMISSION_FACTOR;
-        totalCarbonFootprint += carbon;
-        System.out.println("Vehicle travel added: " + carbon + " kg CO2");
+    public void addVehicleTravel(double liters) {
+        double footprint = liters * 2.31;
+        totalCarbonFootprint += footprint;
+        entries.append("Vehicle Travel: ").append(liters).append(" liters, Carbon Footprint: ")
+               .append(df.format(footprint)).append(" kg CO2\n");
     }
 
-    public void addAirTravel(double distanceKm) {
-        double carbon = distanceKm * AIR_TRAVEL_EMISSION_FACTOR;
-        totalCarbonFootprint += carbon;
-        System.out.println("Air travel added: " + carbon + " kg CO2");
+    public void addAirTravel(double distance) {
+        double footprint = distance * 0.09;
+        totalCarbonFootprint += footprint;
+        entries.append("Air Travel: ").append(distance).append(" km, Carbon Footprint: ")
+               .append(df.format(footprint)).append(" kg CO2\n");
     }
 
-    public void addWaste(double kgOfWaste) {
-        double carbon = kgOfWaste * WASTE_EMISSION_FACTOR;
-        totalCarbonFootprint += carbon;
-        System.out.println("Waste disposal added: " + carbon + " kg CO2");
+    public void addWaste(double waste) {
+        double footprint = waste * 1.9;
+        totalCarbonFootprint += footprint;
+        entries.append("Waste: ").append(waste).append(" kg, Carbon Footprint: ")
+               .append(df.format(footprint)).append(" kg CO2\n");
     }
 
     public double getTotalCarbonFootprint() {
         return totalCarbonFootprint;
     }
 
+    @Override
+    public void displayEntryDetails() {
+        System.out.println("All Carbon Footprint Entries:");
+        System.out.println(entries.length() > 0 ? entries.toString() : "No entries available.");
+    }
+
     public void displayTotalCarbonFootprint() {
-        System.out.println("Total Carbon Footprint for ID " + id + ": " + totalCarbonFootprint + " kg CO2");
+        System.out.println("Total Carbon Footprint: " + df.format(totalCarbonFootprint) + " kg CO2");
     }
 }

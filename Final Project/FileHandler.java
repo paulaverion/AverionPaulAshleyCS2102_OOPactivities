@@ -1,5 +1,4 @@
 import java.io.*;
-import java.util.*;
 
 public class FileHandler {
     private static final String FILE_NAME = "carbon_footprint_data.txt";

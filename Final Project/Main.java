@@ -8,6 +8,7 @@ public class Main {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
+        FileHandler.readData();
 
         while (true) {
             System.out.println("\nCarbon Footprint Calculator");

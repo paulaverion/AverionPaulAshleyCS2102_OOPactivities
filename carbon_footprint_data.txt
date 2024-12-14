@@ -1,6 +1,0 @@
-User ID: 1
-Electricity Usage: 15.0 kWh, Carbon Footprint: 3.50 kg CO2
-Vehicle Travel: 46.0 liters, Carbon Footprint: 106.26 kg CO2
-Air Travel: 87.0 km, Carbon Footprint: 7.83 kg CO2
-Total Carbon Footprint: 117.59 kg CO2
-------------------------------------------------------------
